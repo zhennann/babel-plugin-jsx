@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import { type NodePath } from '@babel/traverse';
-import { createIdentifier } from './utils';
+import { createIdentifier, getBehaviorTagName } from './utils';
 import type { State } from './interface';
 
 export type Tag =
@@ -159,7 +159,16 @@ const resolveDirective = (
   if (directiveName === 'model') {
     let modelToUse;
     const type = getType(path.parentPath as NodePath<t.JSXOpeningElement>);
-    switch ((tag as t.StringLiteral).value) {
+    let tagName = t.isStringLiteral(tag)
+      ? (tag as t.StringLiteral).value
+      : (tag as t.Identifier).name;
+    if (tagName === 'ZBehavior__') {
+      const _tagName = getBehaviorTagName(
+        path.parentPath as NodePath<t.JSXOpeningElement>
+      );
+      if (_tagName) tagName = _tagName;
+    }
+    switch (tagName) {
       case 'select':
         modelToUse = createIdentifier(state, 'vModelSelect');
         break;

@@ -55,7 +55,12 @@ export const checkIsComponent = (
     return shouldTransformedToSlots(namePath.node.property.name); // For withCtx
   }
 
-  const tag = (namePath as NodePath<t.JSXIdentifier>).node.name;
+  let tag = (namePath as NodePath<t.JSXIdentifier>).node.name;
+
+  if (tag === 'ZBehavior__') {
+    const _tag = getBehaviorTagName(path);
+    if (_tag) tag = _tag;
+  }
 
   return (
     !state.opts.isCustomElement?.(tag) &&
@@ -63,6 +68,26 @@ export const checkIsComponent = (
     !htmlTags.includes(tag as htmlTags.htmlTags) &&
     !svgTags.includes(tag)
   );
+};
+
+export const getBehaviorTagName = (path: NodePath<t.JSXOpeningElement>) => {
+  const typePath = path.get('attributes').find((attribute) => {
+    if (!attribute.isJSXAttribute()) {
+      return false;
+    }
+    return (
+      attribute.get('name').isJSXIdentifier() &&
+      attribute.get('name').node.name === 'behaviorTag'
+    );
+  }) as NodePath<t.JSXAttribute> | undefined;
+  const node = typePath
+    ? (typePath.get('value').node as t.JSXExpressionContainer)
+    : null;
+  if (!node) return null;
+  const nodeProp = (<t.ObjectExpression>node.expression).properties.find(
+    (prop) => (<t.Identifier>(<t.ObjectProperty>prop).key).name === 'name'
+  ) as t.ObjectProperty;
+  return nodeProp ? (<t.StringLiteral>nodeProp.value).value : null;
 };
 
 /**
