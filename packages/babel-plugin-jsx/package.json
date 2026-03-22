@@ -1,19 +1,25 @@
 {
-  "name": "@vue/babel-plugin-jsx",
-  "type": "module",
+  "name": "@cabloy/vue-babel-plugin-jsx",
   "version": "2.0.1",
   "description": "Babel plugin for Vue 3 JSX",
-  "author": "Amour1688 <lcz_1996@foxmail.com>",
-  "license": "MIT",
   "homepage": "https://github.com/vuejs/babel-plugin-jsx/tree/dev/packages/babel-plugin-jsx#readme",
+  "bugs": {
+    "url": "https://github.com/vuejs/babel-plugin-jsx/issues"
+  },
+  "license": "MIT",
+  "author": "Amour1688 <lcz_1996@foxmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vuejs/babel-plugin-jsx.git",
     "directory": "packages/babel-plugin-jsx"
   },
-  "bugs": {
-    "url": "https://github.com/vuejs/babel-plugin-jsx/issues"
-  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "dev": "./src/index.ts",
@@ -21,24 +27,10 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "exports": {
       ".": "./dist/index.js",
       "./package.json": "./package.json"
-    }
-  },
-  "peerDependencies": {
-    "@babel/core": "^7.0.0-0"
-  },
-  "peerDependenciesMeta": {
-    "@babel/core": {
-      "optional": true
     }
   },
   "dependencies": {
@@ -60,5 +52,13 @@
     "@vue/test-utils": "^2.4.6",
     "regenerator-runtime": "^0.14.1",
     "vue": "catalog:"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    }
   }
 }
